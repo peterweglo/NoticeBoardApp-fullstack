@@ -7,6 +7,6 @@ router.get('/ads/:id', AdsController.getById);
 router.post('/ads', AdsController.addNew);
 router.put('/ads/:id', AdsController.editById);
 router.delete('/ads/:id', AdsController.deleteById);
-router.get('/search/:searchPhrase', AdsController.getBySearch);
+// router.get('/search/:searchPhrase', AdsController.getBySearch);
 
 module.exports = router;
