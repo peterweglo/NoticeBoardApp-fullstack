@@ -1,5 +1,5 @@
 const initialState = {
-  ads: [{}],
+  ads: [],
 };
 
 export default initialState;
