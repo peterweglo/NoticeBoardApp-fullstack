@@ -11,7 +11,7 @@ const SingleAd = (props) => {
         className='width: 18rem;'
         variant='top'
         src={
-          'https://pixabay.com/get/ge892d1d0c10ded82012111c2e18b43d4ec9c80fe8be3d187f14984b954f81dbcd297a229a1b2d9de7ab435700521b9e890863056ba872112eccd79d0e6b8164ca03761bf224beb94cffc54bf1dd4d616_640.jpg'
+          'https://cdn.pixabay.com/photo/2024/02/25/13/30/coffee-8595772_1280.jpg'
         }
       />
       <Card.Body>
