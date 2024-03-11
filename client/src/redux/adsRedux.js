@@ -29,6 +29,21 @@ export const loadAdsRequest = () => {
   };
 };
 
+export const removeAdRequest = (id) => {
+  return async (dispatch) => {
+    try {
+      const options = {
+        method: 'DELETE',
+        credentials: 'include',
+      };
+      const response = await fetch(`${API_URL}/ads/${id}`, options);
+      dispatch(removeAd(id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 const adsReducer = (statePart = [], action) => {
   switch (action.type) {
     case LOAD_ADS:

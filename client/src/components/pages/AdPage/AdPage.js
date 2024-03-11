@@ -1,17 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { getAdById } from '../../../redux/adsRedux';
+import { useParams, useNavigate } from 'react-router-dom';
+import {
+  getAdById,
+  removeAdRequest,
+  loadAdsRequest,
+} from '../../../redux/adsRedux';
 import { Navigate } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
-import { removeAd } from '../../../redux/adsRedux';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { loadAdsRequest } from '../../../redux/adsRedux';
 
 const AdPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -37,10 +40,10 @@ const AdPage = () => {
     return <Navigate to='/' />;
   }
 
-  const handleRemove = () => {
-    dispatch(removeAd(id));
+  const handleRemove = async () => {
+    await dispatch(removeAdRequest(id));
+    navigate('/');
   };
-
   if (!adData) return <Navigate to='/' />;
 
   return (
@@ -66,10 +69,10 @@ const AdPage = () => {
               <strong>Price:</strong> {adData.price} $
             </Card.Text>
             <Card.Text>
-              <strong>location:</strong> {adData.location} $
+              <strong>location:</strong> {adData.location}
             </Card.Text>
             <Card.Text>
-              <strong>Seller:</strong> {adData.seller} $
+              <strong>Seller:</strong> {adData.seller}
             </Card.Text>
           </Card.Body>
         </Card>
