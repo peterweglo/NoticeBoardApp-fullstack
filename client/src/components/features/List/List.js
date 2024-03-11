@@ -4,14 +4,24 @@ import { Row, Col } from 'react-bootstrap';
 import { getAllAds, loadAdsRequest } from '../../../redux/adsRedux';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 const List = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const ads = useSelector(getAllAds);
 
   useEffect(() => {
-    dispatch(loadAdsRequest());
+    const fetchAds = async () => {
+      await dispatch(loadAdsRequest());
+      setIsLoading(false);
+    };
+    fetchAds();
   }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Row>
