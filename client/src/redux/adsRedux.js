@@ -1,4 +1,5 @@
 import { API_URL } from '../config';
+import shortid from 'shortid';
 
 //selectors
 export const getAllAds = (state) => state.ads;
@@ -8,11 +9,13 @@ export const getAdById = (state, id) => state.ads.find((ad) => ad._id === id);
 const createActionName = (actionName) => `app/ads/${actionName}`;
 const LOAD_ADS = createActionName('LOAD_ADS');
 const REMOVE_AD = createActionName('REMOVE_AD');
+const ADD_AD = createActionName('ADD_AD');
 
 //action creators
 
 export const loadAds = (payload) => ({ payload, type: LOAD_ADS });
 export const removeAd = (payload) => ({ type: REMOVE_AD, payload });
+export const addAd = (payload) => ({ type: ADD_AD, payload });
 
 /* THUNKS */
 
@@ -50,6 +53,8 @@ const adsReducer = (statePart = [], action) => {
       return [...action.payload];
     case REMOVE_AD:
       return statePart.filter((ad) => ad._id !== action.payload);
+    case ADD_AD:
+      return [...statePart, { ...action.payload, _id: shortid() }];
     default:
       return statePart;
   }
