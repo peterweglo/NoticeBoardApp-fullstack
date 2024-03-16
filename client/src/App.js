@@ -6,6 +6,7 @@ import Footer from './components/views/Footer/Footer';
 import { Container } from 'react-bootstrap';
 import AdPage from './components/pages/AdPage/AdPage';
 import AddAdPage from './components/pages/AddAdPage/AddAdPage';
+import Register from './components/pages/Register/Register';
 
 const App = () => {
   return (
@@ -17,8 +18,8 @@ const App = () => {
         <Route path='/ad/add' element={<AddAdPage />} />
         {/* <Route path='/ad/edit/:id' element={<EditAd />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/logout' element={<Logout />} />
-        <Route path='/register' element={<Register />} /> */}
+        <Route path='/logout' element={<Logout />} /> */}
+        <Route path='/register' element={<Register />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />
