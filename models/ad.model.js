@@ -5,7 +5,7 @@ const adSchema = new mongoose.Schema({
   content: { type: String, minLength: 20, maxLength: 1000, required: true },
   publishDate: { type: Date, required: true },
   price: { type: Number, required: true },
-  //   photo: { type: String, required: true },
+  image: { type: String, required: true },
   location: { type: String, required: true },
   seller: { type: String, required: true },
 });

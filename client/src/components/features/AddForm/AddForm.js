@@ -1,16 +1,15 @@
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { API_URL } from '../../../config';
-import Spinner from '../../common/Spinner/Spinner';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const AddForm = ({ user }) => {
-  const navigate = useNavigate();
-
+const AddForm = () => {
+  const user = useSelector((state) => state.user);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [price, setPrice] = useState('');
@@ -18,13 +17,52 @@ const AddForm = ({ user }) => {
   const [location, setLocation] = useState('');
   const [image, setImage] = useState(null);
   const [status, setStatus] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (user === null) {
+      setStatus('loginError');
+    } else {
+      const fd = new FormData();
+      fd.append('title', title);
+      fd.append('content', content);
+      fd.append('price', price);
+      fd.append('location', location);
+      fd.append('image', image);
+      fd.append('seller', user);
+      fd.append('publishDate', publishDate);
+
+      const options = {
+        method: 'POST',
+        credentials: 'include',
+        body: fd,
+      };
+
+      setStatus('loading');
+      fetch(`${API_URL}/api/ads`, options)
+        .then((res) => {
+          if (res.status === 200) {
+            setStatus('success');
+            navigate('/');
+          } else if (res.status === 400) {
+            setStatus('clientError');
+          } else if (res.status === 401) {
+            setStatus('loginError');
+          } else {
+            setStatus('serverError');
+          }
+        })
+        .catch((err) => {
+          console.error('Error fetching data:', err.message);
+          setStatus('serverError');
+        });
+    }
   };
 
   return (
-    <div style={{ width: '70%' }} className='m-auto'>
+    <div style={{ width: '60%' }} className='m-auto'>
       <Form onSubmit={handleSubmit}>
         {status === 'success' && (
           <Alert variant='success'>
@@ -55,9 +93,7 @@ const AddForm = ({ user }) => {
         )}
 
         {status === 'loading' && (
-          <Spinner animation='border' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </Spinner>
+          <Spinner animation='border' role='status'></Spinner>
         )}
 
         <Form.Group className='mb-4'>

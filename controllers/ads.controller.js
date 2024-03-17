@@ -1,4 +1,7 @@
 const Ad = require('../models/ad.model');
+const getImageFileType = require('../utils/getImageFileType');
+const fs = require('fs');
+const User = require('../models/user.model');
 
 exports.getAll = async (req, res) => {
   try {
@@ -21,19 +24,50 @@ exports.getById = async (req, res) => {
 exports.addNew = async (req, res) => {
   try {
     const { title, content, publishDate, price, location, seller } = req.body;
-    const newAd = new Ad({
-      title: title,
-      content: content,
-      publishDate: publishDate,
-      price: price,
-      //   photo: photo,
-      location: location,
-      seller: seller,
-    });
-    await newAd.save();
-    res.json({ message: 'OK' });
+    if (!req.file) {
+      return res.status(400).send({ message: 'File not provided' });
+    }
+    const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
+
+    if (
+      title &&
+      typeof title === 'string' &&
+      content &&
+      typeof content === 'string' &&
+      publishDate &&
+      typeof publishDate === 'string' &&
+      price &&
+      typeof price === 'string' &&
+      location &&
+      typeof location === 'string' &&
+      req.file &&
+      ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(fileType)
+    ) {
+      const loggedUser = await User.findOne({ login: seller });
+
+      if (!loggedUser) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
+
+      const newAd = new Ad({
+        title: title,
+        content: content,
+        publishDate: publishDate,
+        price: price,
+        image: req.file.filename,
+        location: location,
+        seller: loggedUser.login,
+      });
+      await newAd.save();
+      res.json({ message: 'OK' });
+    } else {
+      fs.unlinkSync(req.file.path);
+      res.status(400).send({ message: 'Bad request' });
+    }
   } catch (err) {
-    res.status(500).json({ message: err });
+    fs.unlinkSync(req.file.path);
+    res.status(500).send({ message: err.message });
   }
 };
 
