@@ -45,18 +45,23 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV == 'production',
+      // secure: process.env.NODE_ENV == 'production',
+      secure: false,
     },
   })
 );
+if (process.env.NODE_ENV !== 'production') {
+  app.use(
+    cors({
+      origin: ['http://localhost:3000'],
+      credentials: true,
+    })
+  );
+}
 
 // add routes
 app.use('/api', require('./routes/ads.routes'));
 app.use('/auth', require('./routes/auth.routes'));
-
-// app.get('/', (req, res) => {
-//   res.send('NoticeBoard!');
-// });
 
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(express.static(path.join(__dirname, '/public')));

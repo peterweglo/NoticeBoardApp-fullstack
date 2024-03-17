@@ -2,6 +2,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
 const fs = require('fs');
+const Session = require('../models/session.model');
 
 exports.register = async (req, res) => {
   try {
@@ -85,9 +86,10 @@ exports.getUser = async (req, res) => {
 exports.logout = async (req, res) => {
   try {
     req.session.destroy();
+
     res.send('You have just logged out');
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
-  // if (process.env.NODE_ENV !== 'production') await Session.deleteMany({});
+  if (process.env.NODE_ENV !== 'production') await Session.deleteMany({});
 };

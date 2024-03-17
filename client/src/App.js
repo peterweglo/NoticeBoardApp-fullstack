@@ -15,30 +15,30 @@ import { logIn } from './redux/userRedux';
 import Logout from './components/pages/Logout/Logout';
 
 const App = () => {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   const options = {
-  //     method: 'GET',
-  //     credentials: 'include',
-  //   };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      credentials: 'include',
+    };
 
-  //   fetch(`${API_URL}/auth/user`, options)
-  //     .then((res) => {
-  //       if (res.status === 200) {
-  //         return res.json();
-  //       } else if (res.status === 401) {
-  //         throw new Error('Not authenticated');
-  //       }
-  //     })
-  //     .then((data) => {
-  //       if (data && data.login) {
-  //         dispatch(logIn({ login: data.login }));
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.message);
-  //     });
-  // }, [dispatch]);
+    fetch(`${API_URL}/auth/user`, options)
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else if (res.status === 401) {
+          throw new Error('Not authenticated');
+        }
+      })
+      .then((data) => {
+        if (data && data.login) {
+          dispatch(logIn({ login: data.login }));
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, [dispatch]);
 
   return (
     <Container>
