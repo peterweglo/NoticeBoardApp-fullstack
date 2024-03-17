@@ -49,7 +49,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { login, password } = req.body;
-
     if (
       login &&
       typeof login === 'string' &&
@@ -57,23 +56,30 @@ exports.login = async (req, res) => {
       typeof password === 'string'
     ) {
       const user = await User.findOne({ login });
-
       if (!user) {
-        res.status(400).send({ message: 'Login or password is incorrect' });
+        res.status(400).send({ message: 'Login or password are incorrect' });
       } else {
         if (bcrypt.compareSync(password, user.password)) {
           req.session.user = { login: user.login, userId: user.id };
           res.status(200).send({ message: 'Login successful' });
         } else {
-          res.status(400).send({ message: 'Login or password is incorrect' });
+          res.status(400).send({ message: 'Login or password are incorrect' });
         }
       }
+    } else {
+      res.status(400).send({ message: 'Bad request' });
     }
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).send({ message: err });
+  }
 };
 
 exports.getUser = async (req, res) => {
-  res.send("Yeah!, I'm logged");
+  if (req.session && req.session.user) {
+    res.json({ login: req.session.user.login });
+  } else {
+    res.status(401).send({ message: 'Not authenticated' });
+  }
 };
 
 exports.logout = async (req, res) => {
@@ -83,5 +89,5 @@ exports.logout = async (req, res) => {
   } catch (err) {
     res.status(500).send({ message: err.message });
   }
-  if (process.env.NODE_ENV !== 'production') await Session.deleteMany({});
+  // if (process.env.NODE_ENV !== 'production') await Session.deleteMany({});
 };
