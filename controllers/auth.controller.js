@@ -5,7 +5,10 @@ const fs = require('fs');
 
 exports.register = async (req, res) => {
   try {
-    const { login, password } = req.body;
+    const { login, password, phone } = req.body;
+    if (!req.file) {
+      return res.status(400).send({ message: 'File not provided' });
+    }
     const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
 
     if (
@@ -13,6 +16,8 @@ exports.register = async (req, res) => {
       typeof login === 'string' &&
       password &&
       typeof password === 'string' &&
+      phone &&
+      typeof phone === 'string' &&
       req.file &&
       ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
     ) {
@@ -27,6 +32,7 @@ exports.register = async (req, res) => {
       const user = await User.create({
         login,
         password: await bcrypt.hash(password, 10),
+        phone,
         avatar: req.file.filename,
       });
       res.status(201).send({ message: 'User created: ' + user.login });

@@ -1,6 +1,7 @@
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { API_URL } from '../../../config';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -13,12 +14,68 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(login, password, phone, avatar);
+
+    const fd = new FormData();
+    fd.append('login', login);
+    fd.append('password', password);
+    fd.append('phone', phone);
+    fd.append('avatar', avatar);
+
+    const options = {
+      method: 'POST',
+      body: fd,
+    };
+
+    setStatus('loading');
+    fetch(`${API_URL}/auth/register`, options).then((res) => {
+      if (res.status === 201) {
+        setStatus('success');
+        setLogin('');
+        setPassword('');
+        setPhone('');
+        setAvatar(null);
+      } else if (res.status === 400) {
+        setStatus('clientError');
+      } else if (res.status === 409) {
+        setStatus('loginError');
+      } else {
+        setStatus('serverError');
+      }
+    });
   };
+
   return (
     <Form className='col-12 col-sm-4 mx-auto' onSubmit={handleSubmit}>
       <Form.Group className='mb-3' controlId='formLogin'>
         <Form.Label>Login</Form.Label>
         <h1 className='my-4'>Sign in</h1>
+        {status === 'success' && (
+          <Alert variant='success'>
+            <Alert.Heading>Success!</Alert.Heading>
+            <p>Registration successful!</p>
+          </Alert>
+        )}
+        {status === 'clientError' && (
+          <Alert variant='danger'>
+            <Alert.Heading>Not enough data</Alert.Heading>
+            <p>You have to fill all fields</p>
+          </Alert>
+        )}
+        {status === 'serverError' && (
+          <Alert variant='danger'>
+            <Alert.Heading>Something went wrong</Alert.Heading>
+            <p>Error, try again</p>
+          </Alert>
+        )}
+        {status === 'loginError' && (
+          <Alert variant='warning'>
+            <Alert.Heading>Login in use</Alert.Heading>
+            <p>Please use different login</p>
+          </Alert>
+        )}
+        {status === 'loading' && (
+          <Spinner animation='border' role='status'></Spinner>
+        )}
         <Form.Control
           type='text'
           value={login}
