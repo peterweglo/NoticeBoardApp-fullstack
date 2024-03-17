@@ -19,12 +19,12 @@ const NavBar = () => {
             <Nav.Link as={NavLink} to='/'>
               Home
             </Nav.Link>
-            {/* <Nav.Link as={NavLink} to='/login'>
+            <Nav.Link as={NavLink} to='/login'>
               Sign in
             </Nav.Link>
             <Nav.Link as={NavLink} to='/logout'>
               Logout
-            </Nav.Link> */}
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
