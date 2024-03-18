@@ -26,7 +26,7 @@ const List = () => {
   return (
     <Row>
       {ads.map((ad) => (
-        <Col key={ad._id} xs='12' md='6' lg='4'>
+        <Col key={ad._id} xs="12" md="6" lg="4" className="mb-4">
           <SingleAd {...ad} />
         </Col>
       ))}

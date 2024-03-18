@@ -31,7 +31,7 @@ const AddForm = () => {
       fd.append('price', price);
       fd.append('location', location);
       fd.append('image', image);
-      fd.append('seller', user);
+      fd.append('seller', user.login);
       fd.append('publishDate', publishDate);
 
       const options = {
@@ -62,41 +62,41 @@ const AddForm = () => {
   };
 
   return (
-    <div style={{ width: '60%' }} className='m-auto'>
+    <div style={{ width: '60%' }} className="m-auto">
       <Form onSubmit={handleSubmit}>
         {status === 'success' && (
-          <Alert variant='success'>
+          <Alert variant="success">
             <Alert.Heading>Success!</Alert.Heading>
             <p>You have been added the advert</p>
           </Alert>
         )}
 
         {status === 'serverError' && (
-          <Alert variant='danger'>
+          <Alert variant="danger">
             <Alert.Heading>Something went wrong!</Alert.Heading>
             <p>Unexpected error please try again</p>
           </Alert>
         )}
 
         {status === 'clientError' && (
-          <Alert variant='danger'>
+          <Alert variant="danger">
             <Alert.Heading>Not enough data</Alert.Heading>
             <p>You have to fill all the fields</p>
           </Alert>
         )}
 
         {status === 'loginError' && (
-          <Alert variant='warning'>
+          <Alert variant="warning">
             <Alert.Heading>You must be logged</Alert.Heading>
             <p>You have to login first</p>
           </Alert>
         )}
 
         {status === 'loading' && (
-          <Spinner animation='border' role='status'></Spinner>
+          <Spinner animation="border" role="status"></Spinner>
         )}
 
-        <Form.Group className='mb-4'>
+        <Form.Group className="mb-4">
           <Form.Label>Title</Form.Label>
           <Form.Control
             value={title}
@@ -104,12 +104,12 @@ const AddForm = () => {
           />
         </Form.Group>
 
-        <Form.Group className='mb-4'>
+        <Form.Group className="mb-4">
           <Form.Label>Content of the ad</Form.Label>
-          <ReactQuill as='textarea' value={content} onChange={setContent} />
+          <ReactQuill as="textarea" value={content} onChange={setContent} />
         </Form.Group>
 
-        <Form.Group className='mb-4'>
+        <Form.Group className="mb-4">
           <Form.Label>Price</Form.Label>
           <Form.Control
             value={price}
@@ -117,7 +117,7 @@ const AddForm = () => {
           />
         </Form.Group>
 
-        <Form.Group className='mb-4'>
+        <Form.Group className="mb-4">
           <Form.Label>Published date</Form.Label>
           <DatePicker
             selected={publishDate}
@@ -125,7 +125,7 @@ const AddForm = () => {
           />
         </Form.Group>
 
-        <Form.Group className='mb-4'>
+        <Form.Group className="mb-4">
           <Form.Label>Location</Form.Label>
           <Form.Control
             value={location}
@@ -133,15 +133,15 @@ const AddForm = () => {
           />
         </Form.Group>
 
-        <Form.Group className='mb-4'>
+        <Form.Group className="mb-4">
           <Form.Label>Photo</Form.Label>
           <Form.Control
-            type='file'
+            type="file"
             onChange={(e) => setImage(e.target.files[0])}
           />
         </Form.Group>
 
-        <Button variant='success' type='submit'>
+        <Button variant="success" type="submit">
           Submit
         </Button>
       </Form>
