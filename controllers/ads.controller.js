@@ -75,25 +75,44 @@ exports.editById = async (req, res) => {
   const { title, content, publishDate, price, location, seller } = req.body;
   try {
     const ad = await Ad.findById(req.params.id);
-    if (ad) {
-      await Ad.updateOne(
-        { _id: req.params.id },
-        {
-          $set: {
-            title: title,
-            content: content,
-            publishDate: publishDate,
-            price: price,
-            //   photo: photo,
-            location: location,
-            seller: seller,
-          },
-        }
-      );
-      res.json(ad);
-    } else res.status(404).json({ message: 'Not found...' });
+    if (!ad) {
+      return res.status(404).json({ message: 'Not found' });
+    }
+
+    let updateFields = {
+      title,
+      content,
+      publishDate,
+      price,
+      location,
+      seller,
+    };
+
+    if (req.file) {
+      const fileType = await getImageFileType(req.file);
+      if (
+        !['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(
+          fileType
+        )
+      ) {
+        fs.unlinkSync(req.file.path);
+        return res.status(400).json({ message: 'Invalid file type' });
+      }
+      updateFields.image = req.file.filename;
+    }
+
+    await Ad.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateFields },
+      { new: true }
+    );
+
+    res.json({ message: 'Ad updated', ...updateFields });
   } catch (err) {
-    res.status(500).json({ message: err });
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({ message: err.message });
   }
 };
 

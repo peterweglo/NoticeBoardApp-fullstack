@@ -13,6 +13,7 @@ import { API_URL } from './config';
 import { useEffect } from 'react';
 import { logIn } from './redux/userRedux';
 import Logout from './components/pages/Logout/Logout';
+import EditAd from './components/pages/EditAd/EditAd';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/ad/:id' element={<AdPage />} />
         <Route path='/ad/add' element={<AddAdPage />} />
-        {/* <Route path='/ad/edit/:id' element={<EditAd />} /> */}
+        <Route path='/ad/edit/:id' element={<EditAd />} />
         <Route path='/login' element={<Login />} />
         <Route path='/logout' element={<Logout />} />
         <Route path='/register' element={<Register />} />
