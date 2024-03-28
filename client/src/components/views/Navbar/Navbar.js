@@ -19,8 +19,11 @@ const NavBar = () => {
             <Nav.Link as={NavLink} to='/'>
               Home
             </Nav.Link>
+            <Nav.Link as={NavLink} to='/register'>
+              Register
+            </Nav.Link>
             <Nav.Link as={NavLink} to='/login'>
-              Sign in
+              Login
             </Nav.Link>
             <Nav.Link as={NavLink} to='/logout'>
               Logout

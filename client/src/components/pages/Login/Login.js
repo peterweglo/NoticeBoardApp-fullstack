@@ -50,7 +50,7 @@ const Login = () => {
       className='col-12 col-sm-3 mx-auto text-center'
       onSubmit={submitHandler}
     >
-      <h1 className='my-4'>Sign Up</h1>
+      <h1 className='my-4'>Sign In</h1>
       {status === 'success' && (
         <Alert variant='success'>
           <Alert.Heading>Success!</Alert.Heading>

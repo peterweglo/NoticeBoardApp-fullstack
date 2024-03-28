@@ -47,8 +47,7 @@ const Register = () => {
   return (
     <Form className='col-12 col-sm-4 mx-auto' onSubmit={handleSubmit}>
       <Form.Group className='mb-3' controlId='formLogin'>
-        <Form.Label>Login</Form.Label>
-        <h1 className='my-4'>Sign in</h1>
+        <h1 className='my-4'>Sign up</h1>
         {status === 'success' && (
           <Alert variant='success'>
             <Alert.Heading>Success!</Alert.Heading>
