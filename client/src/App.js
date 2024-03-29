@@ -15,6 +15,8 @@ import { logIn } from './redux/userRedux';
 import Logout from './components/pages/Logout/Logout';
 import EditAd from './components/pages/EditAd/EditAd';
 
+import SearchPage from './components/pages/SearchPage/SearchPage';
+
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -52,6 +54,7 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/logout' element={<Logout />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/ad/search/:searchPhrase' element={<SearchPage />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <Footer />

@@ -10,12 +10,17 @@ const createActionName = (actionName) => `app/ads/${actionName}`;
 const LOAD_ADS = createActionName('LOAD_ADS');
 const REMOVE_AD = createActionName('REMOVE_AD');
 const ADD_AD = createActionName('ADD_AD');
+const SEARCH_ADS = createActionName('SEARCH_ADS');
 
 //action creators
 
 export const loadAds = (payload) => ({ payload, type: LOAD_ADS });
 export const removeAd = (payload) => ({ type: REMOVE_AD, payload });
 export const addAd = (payload) => ({ type: ADD_AD, payload });
+export const searchAd = (payload) => ({
+  type: SEARCH_ADS,
+  payload: { payload },
+});
 
 /* THUNKS */
 
@@ -47,6 +52,23 @@ export const removeAdRequest = (id) => {
   };
 };
 
+export const searchRequest = async (searchPhrase) => {
+  return (dispatch) => {
+    console.log(searchPhrase);
+    const options = {
+      method: 'GET',
+      credentials: 'include',
+    };
+    fetch(`${API_URL}/api/ads/search/${searchPhrase}`, options).then((res) => {
+      if (res.status === 200) {
+        res.json().then((data) => {
+          dispatch(loadAds({ data }));
+        });
+      }
+    });
+  };
+};
+
 const adsReducer = (statePart = [], action) => {
   switch (action.type) {
     case LOAD_ADS:
@@ -55,6 +77,8 @@ const adsReducer = (statePart = [], action) => {
       return statePart.filter((ad) => ad._id !== action.payload);
     case ADD_AD:
       return [...statePart, { ...action.payload, _id: shortid() }];
+    case SEARCH_ADS:
+      return statePart.filter((ad) => ad.title.includes(action.payload));
     default:
       return statePart;
   }

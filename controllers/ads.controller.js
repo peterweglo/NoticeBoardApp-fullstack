@@ -127,3 +127,12 @@ exports.deleteById = async (req, res) => {
     res.status(500).json({ message: err });
   }
 };
+exports.getAdsBySearch = async (req, res) => {
+  try {
+    const { searchPhrase } = req.params;
+    const results = await Ad.fuzzySearch(searchPhrase);
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ message: err.stack });
+  }
+};
