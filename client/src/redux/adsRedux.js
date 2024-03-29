@@ -29,7 +29,6 @@ export const loadAdsRequest = () => {
     try {
       const response = await fetch(`${API_URL}/api/ads`);
       const data = await response.json();
-      console.log(data);
       dispatch(loadAds(data));
     } catch (error) {
       console.log(error);

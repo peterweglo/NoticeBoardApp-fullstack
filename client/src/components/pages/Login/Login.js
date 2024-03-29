@@ -33,7 +33,7 @@ const Login = () => {
           dispatch(logIn(login));
           setTimeout(() => {
             navigate('/');
-          }, 1000);
+          }, 1500);
         } else if (res.status === 400) {
           setStatus('clientError');
         } else {
@@ -54,7 +54,7 @@ const Login = () => {
       {status === 'success' && (
         <Alert variant='success'>
           <Alert.Heading>Success!</Alert.Heading>
-          <p>You have been successFully logged in!</p>
+          <p>You have been successfully logged in!</p>
         </Alert>
       )}
       {status === 'clientError' && (
