@@ -5,6 +5,7 @@ import { getAllAds, loadAdsRequest } from '../../../redux/adsRedux';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 
 const List = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,13 +21,13 @@ const List = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spinner animation='border' role='status'></Spinner>;
   }
 
   return (
     <Row>
       {ads.map((ad) => (
-        <Col key={ad._id} xs="12" md="6" lg="4" className="mb-4">
+        <Col key={ad._id} xs='12' md='6' lg='4' className='mb-4'>
           <SingleAd {...ad} />
         </Col>
       ))}

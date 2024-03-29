@@ -52,23 +52,6 @@ export const removeAdRequest = (id) => {
   };
 };
 
-export const searchRequest = async (searchPhrase) => {
-  return (dispatch) => {
-    console.log(searchPhrase);
-    const options = {
-      method: 'GET',
-      credentials: 'include',
-    };
-    fetch(`${API_URL}/api/ads/search/${searchPhrase}`, options).then((res) => {
-      if (res.status === 200) {
-        res.json().then((data) => {
-          dispatch(loadAds({ data }));
-        });
-      }
-    });
-  };
-};
-
 const adsReducer = (statePart = [], action) => {
   switch (action.type) {
     case LOAD_ADS:
