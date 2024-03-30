@@ -23,10 +23,13 @@ app.use(
 );
 
 // connects our backend code with the database
-mongoose.connect('mongodb://localhost:27017/noticeBoard', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+
+const dbURI =
+  process.env.NODE_ENV === 'production'
+    ? `mongodb+srv://peterweglo:${process.env.DB_PASS}@cluster0.zksflg6.mongodb.net/noticeBoard?retryWrites=true&w=majority&appName=Cluster0`
+    : 'mongodb://localhost:27017/noticeBoard';
+
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 
@@ -38,15 +41,12 @@ db.on('error', (err) => console.log('Error ' + err));
 
 app.use(
   session({
-    secret: 'xyz567',
-    store: MongoStore.create({
-      mongoUrl: 'mongodb://localhost:27017/noticeBoard',
-    }),
+    secret: process.env.SECRET,
+    store: MongoStore.create(mongoose.connection),
     resave: false,
     saveUninitialized: false,
     cookie: {
-      // secure: process.env.NODE_ENV == 'production',
-      secure: false,
+      secure: process.env.NODE_ENV == 'production',
     },
   })
 );
