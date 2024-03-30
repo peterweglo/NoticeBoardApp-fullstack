@@ -24,14 +24,7 @@ exports.getById = async (req, res) => {
 exports.addNew = async (req, res) => {
   try {
     const { title, content, publishDate, price, location, seller } = req.body;
-    console.log('Received request with:', {
-      title,
-      content,
-      publishDate,
-      price,
-      location,
-      seller,
-    });
+
     if (!req.file) {
       return res.status(400).send({ message: 'File not provided' });
     }
@@ -52,7 +45,6 @@ exports.addNew = async (req, res) => {
       ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'].includes(fileType)
     ) {
       const loggedUser = await User.findOne({ login: seller });
-      console.log('loggedUser', loggedUser);
 
       if (!loggedUser) {
         res.status(404).json({ message: 'User not found' });

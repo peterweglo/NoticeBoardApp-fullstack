@@ -57,7 +57,7 @@ const AdPage = () => {
           <Card.Title className='text-center'>{adData.title}</Card.Title>
           <Card.Text>
             <strong>Content:</strong>
-            <span dangerouslySetInnerHTML={{ __html: adData.content }} />
+            {adData.content}
           </Card.Text>
           <Card.Text>
             <strong>Published:</strong> {adData.publishDate}

@@ -1,12 +1,12 @@
 import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { useState } from 'react';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { API_URL } from '../../../config';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const AddForm = (props) => {
   const user = useSelector((state) => state.user);
@@ -19,9 +19,13 @@ const AddForm = (props) => {
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit: validate,
+    formState: { errors },
+  } = useForm();
 
+  const handleSubmit = () => {
     if (user === null) {
       setStatus('loginError');
     } else {
@@ -67,7 +71,7 @@ const AddForm = (props) => {
 
   return (
     <div style={{ width: '60%' }} className='m-auto'>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={validate(handleSubmit)}>
         {status === 'success' && (
           <Alert variant='success'>
             <Alert.Heading>Success!</Alert.Heading>
@@ -103,14 +107,48 @@ const AddForm = (props) => {
         <Form.Group className='mb-4'>
           <Form.Label>Title</Form.Label>
           <Form.Control
+            {...register('title', {
+              required: 'Title is required.',
+              minLength: {
+                value: 10,
+                message: 'Title is too short (min is 10).',
+              },
+              maxLength: {
+                value: 50,
+                message: 'Title is too long (max is 50).',
+              },
+            })}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            isInvalid={errors.title}
           />
+          <Form.Control.Feedback type='invalid'>
+            {errors.title?.message}
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className='mb-4'>
           <Form.Label>Content of the ad</Form.Label>
-          <ReactQuill as='textarea' value={content} onChange={setContent} />
+          <Form.Control
+            as='textarea'
+            {...register('content', {
+              required: 'Content is required.',
+              minLength: {
+                value: 20,
+                message: 'Content is too short (min is 20).',
+              },
+              maxLength: {
+                value: 1000,
+                message: 'Content is too long (max is 1000).',
+              },
+            })}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            isInvalid={errors.content}
+          />
+          <Form.Control.Feedback type='invalid'>
+            {errors.content?.message}
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className='mb-4'>
